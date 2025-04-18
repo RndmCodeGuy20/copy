@@ -1,0 +1,96 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Copy Link</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            max-width: 800px;
+            margin: 0 auto;
+            padding: 20px;
+        }
+
+        .content-box {
+            border: 1px solid #ddd;
+            padding: 15px;
+            margin: 20px 0;
+            border-radius: 5px;
+            background-color: #f9f9f9;
+        }
+
+        button {
+            background-color: #4CAF50;
+            color: white;
+            border: none;
+            padding: 10px 15px;
+            border-radius: 4px;
+            cursor: pointer;
+        }
+
+        button:hover {
+            background-color: #45a049;
+        }
+
+        .success-message {
+            color: #4CAF50;
+            display: none;
+            margin-left: 10px;
+        }
+    </style>
+</head>
+
+<body>
+    <h1>URL Parameter Content</h1>
+
+    <div class="content-box" id="content-display">
+        No content found in URL parameters
+    </div>
+
+    <button id="copy-button">Copy to Clipboard</button>
+    <span id="success-message" class="success-message">Copied!</span>
+
+    <p>
+        <strong>Instructions:</strong> Add text to copy by appending <code>?text=your+text+here</code> to the URL.
+    </p>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', function () {
+            // Get content from URL parameter
+            const urlParams = new URLSearchParams(window.location.search);
+            const contentParam = urlParams.get('text');
+
+            const contentDisplay = document.getElementById('content-display');
+            const copyButton = document.getElementById('copy-button');
+            const successMessage = document.getElementById('success-message');
+
+            // Display content if it exists
+            if (contentParam) {
+                contentDisplay.textContent = contentParam;
+            }
+
+            // Copy button functionality
+            copyButton.addEventListener('click', function () {
+                if (contentParam) {
+                    navigator.clipboard.writeText(contentParam)
+                        .then(() => {
+                            successMessage.style.display = 'inline';
+                            setTimeout(() => {
+                                successMessage.style.display = 'none';
+                            }, 2000);
+                        })
+                        .catch(err => {
+                            console.error('Failed to copy text: ', err);
+                            alert('Failed to copy text. Your browser may not support this feature.');
+                        });
+                } else {
+                    alert('No content to copy!');
+                }
+            });
+        });
+    </script>
+</body>
+
+</html>
